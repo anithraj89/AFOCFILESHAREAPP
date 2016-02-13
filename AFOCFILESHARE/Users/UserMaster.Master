@@ -1,0 +1,172 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="UserMaster.master.cs" Inherits="AFOCFILESHARE.Users.UserMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Armed Forces Officers Club & Hotel:</title>
+ <link rel="shortcut icon" href="../logo/logo1.ico"/> 
+<link href="../Styles/css/bootstrap.min.css" rel="stylesheet">
+<link href="../Styles/css/datepicker3.css" rel="stylesheet">
+<link href="../Styles/css/styles.css" rel="stylesheet">
+<link href="../Styles/css/bootstrap-table.css" rel="stylesheet">
+ <style type="text/css">
+        #nav > li.current-menu-item > a, #nav > li.current_page_item > a
+        {
+            background-color: #30a5ff;
+            color:White;
+        }
+        </style>
+  <link rel="Stylesheet" type="text/css" href="../Styles/css/ValidatorStyle.css" />
+
+<!--Icons-->
+<script type="text/javascript" src="../Scripts/js/lumino.glyphs.js"></script>
+
+<script type="text/javascript" src="../Scripts/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../Scripts/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../Scripts/js/chart.min.js"></script>
+	<script type="text/javascript" src="../Scripts/js/chart-data.js"></script>
+	<script type="text/javascript" src="../Scripts/js/easypiechart.js"></script>
+	<script type="text/javascript" src="../Scripts/js/easypiechart-data.js"></script>
+	<script type="text/javascript" src="../Scripts/js/bootstrap-datepicker.js"></script>
+    	<script type="text/javascript" src="../Scripts/js/bootstrap-table.js"></script>
+	<script type="text/javascript">
+	    $('#calendar').datepicker({
+	});
+
+	!function ($) {
+	    $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
+	        $(this).find('em:first').toggleClass("glyphicon-minus");
+	    });
+	    $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+	} (window.jQuery);
+
+	$(window).on('resize', function () {
+	    if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+	})
+	$(window).on('resize', function () {
+	    if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+	})
+	</script>	
+
+    <script type="text/javascript">
+        $(function () {
+            var str = location.href.toLowerCase();
+            $("#nav li a").each(function () {
+                if (str.indexOf($(this).attr("href").toLowerCase()) > -1) {
+                    $("li.current-menu-item").removeClass("current-menu-item");
+                    $(this).parent().addClass("current-menu-item");
+                }
+            });
+            $("li.current-menu-item").parents().each(function () {
+                if ($(this).is("li")) {
+                    $(this).addClass("current-menu-item");
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            CheckingSeassion();
+        });
+        function CheckingSeassion() {
+            $.ajax({
+                type: "POST",
+                url: "Logout.aspx/LogoutCheck",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d == 0) {
+                        window.location = "../Index.aspx";
+                    }
+                },
+                failure: function (msg) {
+                    alert(msg);
+                }
+            });
+        }
+
+    </script>
+
+
+    <script type = "text/javascript" >
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+</script>
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="Home.aspx"><span>AFOC</span> File Share</a>
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> <%= Session["user"]%>  <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<%--<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+							<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>--%>
+							<li><a href="Logout.aspx"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+
+
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		
+			<div class="form-group">
+				 <input  class="form-control" >
+			</div>
+		
+		<ul class="nav menu" id="nav">
+            <li class="current-menu-item"><a href="Home.aspx">
+                <svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg>
+                Dashboard</a></li>
+            <li><a href="ListFiles.aspx">
+                <svg class="glyph stroked blank document"><use xlink:href="#stroked-blank-document"/></svg>
+                Files</a></li>
+            <li><a href="UploadFiles.aspx">
+                <svg class="glyph stroked upload"><use xlink:href="#stroked-upload"/></svg>
+                New Uploads</a></li>
+
+           <li ><a href="ChangePasswordUser.aspx">
+           <svg class="glyph stroked lock"><use xlink:href="#stroked-lock"/></svg> Change Password</a></li>
+
+            <%--<li><a href="Logout.aspx">
+                <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
+                Logout</a></li>--%>
+        </ul>
+
+	</div>
+      <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </form>
+
+
+</body>
+</html>
